@@ -21,7 +21,7 @@ build() {
 package() {
   cd "$srcdir/pytagcloud-$pkgver"
 
-  python2 setup.py install --root="$pkgdir"
+  python2 setup.py install --root="$pkgdir" --optimize=1
 
   # Install license
   install -D -m 755 "$srcdir/LICENSE" \
