@@ -2,5 +2,6 @@
 /*/src
 /*/pkg
 
-# packages
-*.pkg.tar.xz
+# ignore packages by default
+*.tar.xz
+*.tar.gz
