@@ -1,0 +1,37 @@
+# Contributor: Chun Yang <x@cyang.info>
+pkgname=intel-vtune-amplifier-xe
+pkgver=2013update5
+pkgrel=1
+pkgdesc="Easy to use performance and thread profiler for C, C++, C#, Fortran, Java and MPI developers."
+arch=('any')
+url=http://software.intel.com/en-us/non-commercial-software-development
+license=('custom')
+#depends=('libpng12' 'libjpeg6')
+makedepends=('rpmextract' 'linux-headers')
+install=intel-vtune-amplifier-xe.install
+#source=(http://registrationcenter.cps.intel.com/irc_nas/2973/vtune_amplifier_xe_2013_update4.tar.gz)
+source=(http://registrationcenter-download.intel.com/akdlm/irc_nas/3020/vtune_amplifier_xe_2013_update5.tar.gz)
+md5sums=('756b277b3baba85f788473b137c82bda')
+
+build() {
+    cd "$srcdir/vtune_amplifier_xe_2013_update5/"
+
+    find -name "*.rpm" -exec rpmextract.sh {} \;
+
+    pushd opt/intel/vtune_amplifier_xe_2013/sepdk/src
+
+    patch -uN vtsspp/cpuevents.c "$srcdir/cpuevents-patch.diff"
+
+    ./build-driver -ni \
+        --install-dir=/opt/intel/vtune_amplifier_xe_2013/sepdk/src
+
+    popd
+}
+
+package() {
+    cd "$srcdir/vtune_amplifier_xe_2013_update5/"
+
+    mv opt "$pkgdir"
+
+    install -D -m644 EULA.txt "$pkgdir/usr/share/licenses/$pkgname/EULA.txt"
+}

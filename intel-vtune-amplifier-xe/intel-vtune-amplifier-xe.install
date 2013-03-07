@@ -1,0 +1,4 @@
+post_install() {
+    cd /opt/intel/vtune_amplifier_xe_2013/sepdk/src
+    ./insmod-sep3 -r -g vtune
+}
