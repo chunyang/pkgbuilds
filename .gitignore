@@ -1,0 +1,6 @@
+# makepkg generated files
+/*/src
+/*/pkg
+
+# packages
+*.pkg.tar.xz
