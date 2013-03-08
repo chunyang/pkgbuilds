@@ -1,11 +1,22 @@
 post_install() {
-    cd /opt/intel/vtune_amplifier_xe_2013/sepdk/src
+    if [ -d "/opt/intel/vtune_amplifier_xe_2013/bin64" ]; then
+        _carch=64
+    elif [ -d "/opt/intel/vtune_amplifier_xe_2013/bin32" ]; then
+        _carch=32
+    else
+        echo "Cannot determine CARCH"
+        exit 1
+    fi
 
+    pushd "/opt/intel/vtune_amplifier_xe_2013/bin$_carch"
     # insert modules
     ./insmod-sep3 -r -g vtune
+    ./insmod-apwr -r -g vtune
 
     # create boot script
-    ./boot-script -g vtune -d /opt/intel/vtune_amplifier_xe_2013/sepdk/src/
+    ./boot-script-sep3 -g vtune -d "/opt/intel/vtune_amplifier_xe_2013/bin$_carch"
+    ./boot-script-apwr -g vtune -d "/opt/intel/vtune_amplifier_xe_2013/bin$_carch"
+    popd
 
     cat <<EOD
 * License files should be placed in /opt/intel/licenses. If you have a serial
@@ -24,4 +35,8 @@ post_install() {
 
   https://wiki.archlinux.org/index.php/VTune#VTune_Amplifier_XE_2011
 EOD
+}
+
+post_upgrade() {
+    post_install "$1"
 }
