@@ -8,7 +8,11 @@ post_install() {
     ./boot-script -g vtune -d /opt/intel/vtune_amplifier_xe_2013/sepdk/src/
 
     cat <<EOD
-* License files should be placed in /opt/intel/licenses.
+* License files should be placed in /opt/intel/licenses. If you have a serial
+  number but no license file, visit the following link (replace XXXX-XXXXXXXX
+  with your serial number.
+
+  https://registrationcenter.intel.com/RegCenter/ViewLicense.aspx?sn=XXXX-XXXXXXXX
 
 * To use VTune you must add yourself into vtune group.
 
