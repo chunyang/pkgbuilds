@@ -1,4 +1,19 @@
 post_install() {
     cd /opt/intel/vtune_amplifier_xe_2013/sepdk/src
+
+    # insert modules
     ./insmod-sep3 -r -g vtune
+
+    # create boot script
+    ./boot-script -g vtune -d /opt/intel/vtune_amplifier_xe_2013/sepdk/src/
+
+    cat <<EOD
+* License files should be placed in /opt/intel/licenses.
+
+* To use VTune you must add yourself into vtune group.
+
+* To insert VTune modules at boot, enable the systemd service script
+
+  # systemctl enable intel-vtune.service
+EOD
 }

@@ -1,0 +1,10 @@
+[Unit]
+Description=Load modules for Intel VTune Amplifier
+[Service]
+ExecStart=/etc/init.d/sep3_10 start
+ExecStop=/etc/init.d/sep3_10 stop
+PIDFile=/var/lock/subsys/sep3_10
+TimeoutSec=0
+RemainAfterExit=yes
+[Install]
+WantedBy=multi-user.target

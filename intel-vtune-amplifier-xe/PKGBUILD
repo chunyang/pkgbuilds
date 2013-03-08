@@ -1,7 +1,7 @@
 # Contributor: Chun Yang <x@cyang.info>
 pkgname=intel-vtune-amplifier-xe
 pkgver=2013update5
-pkgrel=1
+pkgrel=2
 pkgdesc="Easy to use performance and thread profiler for C, C++, C#, Fortran, Java and MPI developers."
 arch=('any')
 url=http://software.intel.com/en-us/non-commercial-software-development
@@ -10,9 +10,14 @@ license=('custom')
 makedepends=('rpmextract' 'linux-headers')
 install=intel-vtune-amplifier-xe.install
 #source=(http://registrationcenter.cps.intel.com/irc_nas/2973/vtune_amplifier_xe_2013_update4.tar.gz)
-source=(http://registrationcenter-download.intel.com/akdlm/irc_nas/3020/vtune_amplifier_xe_2013_update5.tar.gz)
-md5sums=('756b277b3baba85f788473b137c82bda')
-
+source=('http://registrationcenter-download.intel.com/akdlm/irc_nas/3020/vtune_amplifier_xe_2013_update5.tar.gz'
+        'cpuevents-patch.diff'
+        'intel-vtune.sh'
+        'intel-vtune.service')
+md5sums=('756b277b3baba85f788473b137c82bda'
+         '3220bf7096f9badec561d658c6ff6c6b'
+         '5f96a40d30795b8b35cf2e2b00684122'
+         '51414e611e86d1ab9d6a2f6f231b7d32')
 build() {
     cd "$srcdir/vtune_amplifier_xe_2013_update5/"
 
@@ -22,8 +27,7 @@ build() {
 
     patch -uN vtsspp/cpuevents.c "$srcdir/cpuevents-patch.diff"
 
-    ./build-driver -ni \
-        --install-dir=/opt/intel/vtune_amplifier_xe_2013/sepdk/src
+    ./build-driver -ni
 
     popd
 }
@@ -31,7 +35,13 @@ build() {
 package() {
     cd "$srcdir/vtune_amplifier_xe_2013_update5/"
 
-    mv opt "$pkgdir"
+    cp -aR opt "$pkgdir"
 
     install -D -m644 EULA.txt "$pkgdir/usr/share/licenses/$pkgname/EULA.txt"
+    install -D -m755 "$srcdir/intel-vtune.sh" "$pkgdir/etc/profile.d/intel-vtune.sh"
+    install -D -m644 "$srcdir/intel-vtune.service" "$pkgdir/usr/lib/systemd/system/intel-vtune.service"
+
+    cd "$pkgdir/opt/intel/vtune_amplifier_xe_2013"
+
+    ./amplxe-genvars.sh
 }
