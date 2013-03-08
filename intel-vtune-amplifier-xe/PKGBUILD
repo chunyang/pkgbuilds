@@ -15,7 +15,7 @@ source=('http://registrationcenter-download.intel.com/akdlm/irc_nas/3020/vtune_a
         'intel-vtune.sh'
         'intel-vtune.service')
 md5sums=('756b277b3baba85f788473b137c82bda'
-         '3220bf7096f9badec561d658c6ff6c6b'
+         '1601383fa16adbbf0e79b6a1c9fab855'
          '5f96a40d30795b8b35cf2e2b00684122'
          '51414e611e86d1ab9d6a2f6f231b7d32')
 build() {
@@ -43,5 +43,7 @@ package() {
 
     cd "$pkgdir/opt/intel/vtune_amplifier_xe_2013"
 
-    ./amplxe-genvars.sh
+    # generate amplxe-vars.sh and amplxe-vars.csh using correct paths
+    sh <(sed "s|^\(SCRIPT_DIR=\).*|\1/opt/intel/vtune_amplifier_xe_2013|;
+              s|^\(OUTPUT_[^_]*_PATH=\)|\1${pkgdir}/|" amplxe-genvars.sh)
 }

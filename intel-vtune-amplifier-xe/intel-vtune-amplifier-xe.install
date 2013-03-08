@@ -19,5 +19,9 @@ post_install() {
 * To insert VTune modules at boot, enable the systemd service script
 
   # systemctl enable intel-vtune.service
+
+* For more information, visit the ArchWiki VTune page
+
+  https://wiki.archlinux.org/index.php/VTune#VTune_Amplifier_XE_2011
 EOD
 }
