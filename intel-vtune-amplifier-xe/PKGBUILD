@@ -30,10 +30,10 @@ build() {
     ./build-driver -ni
     popd
 
-    # build power drivers
-    pushd opt/intel/vtune_amplifier_xe_2013/powerdk/src
-    ./build-driver -ni
-    popd
+    # # build power drivers
+    # pushd opt/intel/vtune_amplifier_xe_2013/powerdk/src
+    # ./build-driver -ni
+    # popd
 
     # build performance counter monitor
     pushd opt/intel/vtune_amplifier_xe_2013/contrib
@@ -70,17 +70,17 @@ package() {
     install -D -m644 opt/intel/vtune_amplifier_xe_2013/sepdk/src/pax/pax.ko "$pkgdir/usr/lib/modules/$(uname -r)/extramodules/pax.ko"
     install -D -m644 opt/intel/vtune_amplifier_xe_2013/sepdk/src/vtsspp/vtsspp.ko "$pkgdir/usr/lib/modules/$(uname -r)/extramodules/vtsspp.ko"
     install -D -m644 opt/intel/vtune_amplifier_xe_2013/sepdk/src/sep3_10.ko "$pkgdir/usr/lib/modules/$(uname -r)/extramodules/sep3_10.ko"
-    install -D -m644 opt/intel/vtune_amplifier_xe_2013/powerdk/src/apwr3_1.ko "$pkgdir/usr/lib/modules/$(uname -r)/extramodules/apwr3_1.ko"
+    #install -D -m644 opt/intel/vtune_amplifier_xe_2013/powerdk/src/apwr3_1.ko "$pkgdir/usr/lib/modules/$(uname -r)/extramodules/apwr3_1.ko"
 
     # Scripts
     cp -a opt/intel/vtune_amplifier_xe_2013/sepdk/src/pax/insmod-pax "$pkgdir/opt/intel/vtune_amplifier_xe_2013/bin$_carch/insmod-pax"
     cp -a opt/intel/vtune_amplifier_xe_2013/sepdk/src/vtsspp/insmod-vtsspp "$pkgdir/opt/intel/vtune_amplifier_xe_2013/bin$_carch/insmod-vtsspp"
     cp -a opt/intel/vtune_amplifier_xe_2013/sepdk/src/insmod-sep3 "$pkgdir/opt/intel/vtune_amplifier_xe_2013/bin$_carch/insmod-sep3"
-    cp -a opt/intel/vtune_amplifier_xe_2013/powerdk/src/insmod-apwr "$pkgdir/opt/intel/vtune_amplifier_xe_2013/bin$_carch/insmod-apwr"
+    #cp -a opt/intel/vtune_amplifier_xe_2013/powerdk/src/insmod-apwr "$pkgdir/opt/intel/vtune_amplifier_xe_2013/bin$_carch/insmod-apwr"
     cp -a opt/intel/vtune_amplifier_xe_2013/sepdk/src/pax/rmmod-pax "$pkgdir/opt/intel/vtune_amplifier_xe_2013/bin$_carch/rmmod-pax"
     cp -a opt/intel/vtune_amplifier_xe_2013/sepdk/src/vtsspp/rmmod-vtsspp "$pkgdir/opt/intel/vtune_amplifier_xe_2013/bin$_carch/rmmod-vtsspp"
     cp -a opt/intel/vtune_amplifier_xe_2013/sepdk/src/rmmod-sep3 "$pkgdir/opt/intel/vtune_amplifier_xe_2013/bin$_carch/rmmod-sep3"
-    cp -a opt/intel/vtune_amplifier_xe_2013/powerdk/src/rmmod-apwr "$pkgdir/opt/intel/vtune_amplifier_xe_2013/bin$_carch/rmmod-apwr"
+    #cp -a opt/intel/vtune_amplifier_xe_2013/powerdk/src/rmmod-apwr "$pkgdir/opt/intel/vtune_amplifier_xe_2013/bin$_carch/rmmod-apwr"
 
     cp -a opt/intel/vtune_amplifier_xe_2013/sepdk/src/update_sep_version.pl "$pkgdir/opt/intel/vtune_amplifier_xe_2013/bin$_carch/update_sep_version.pl"
 
@@ -93,15 +93,15 @@ package() {
     ln -s /usr/lib/modules/$(uname -r)/extramodules/pax.ko "$pkgdir/opt/intel/vtune_amplifier_xe_2013/bin$_carch/pax-$_carch2-$(uname -r)smp.ko"
     ln -s /usr/lib/modules/$(uname -r)/extramodules/vtsspp.ko "$pkgdir/opt/intel/vtune_amplifier_xe_2013/bin$_carch/vtsspp-$_carch2-$(uname -r)smp.ko"
     ln -s /usr/lib/modules/$(uname -r)/extramodules/sep3_10.ko "$pkgdir/opt/intel/vtune_amplifier_xe_2013/bin$_carch/sep3_10-$_carch2-$(uname -r)smp.ko"
-    ln -s /usr/lib/modules/$(uname -r)/extramodules/apwr3_1.ko "$pkgdir/opt/intel/vtune_amplifier_xe_2013/bin$_carch/apwr3_1-$_carch2-$(uname -r)smp.ko"
+    #ln -s /usr/lib/modules/$(uname -r)/extramodules/apwr3_1.ko "$pkgdir/opt/intel/vtune_amplifier_xe_2013/bin$_carch/apwr3_1-$_carch2-$(uname -r)smp.ko"
 
     # Contrib binaries
     install -D -m755 opt/intel/vtune_amplifier_xe_2013/contrib/IntelPerformanceCounterMonitor-V2.35/*.x "$pkgdir/opt/intel/vtune_amplifier_xe_2013/bin$_carch/"
 
     cd "$pkgdir/opt/intel/vtune_amplifier_xe_2013"
 
-    # fix path bug in insmod-apwr
-    sed -i '/^DRIVER_FILENAME=/d;s/^#\(DRIVER_FILENAME=\)/\1/' "$pkgdir/opt/intel/vtune_amplifier_xe_2013/bin$_carch/insmod-apwr"
+    # # fix path bug in insmod-apwr
+    # sed -i '/^DRIVER_FILENAME=/d;s/^#\(DRIVER_FILENAME=\)/\1/' "$pkgdir/opt/intel/vtune_amplifier_xe_2013/bin$_carch/insmod-apwr"
 
     # generate amplxe-vars.sh and amplxe-vars.csh using correct paths
     sh <(sed "s|^\(SCRIPT_DIR=\).*|\1/opt/intel/vtune_amplifier_xe_2013|;

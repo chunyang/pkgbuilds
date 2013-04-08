@@ -11,11 +11,11 @@ post_install() {
     pushd "/opt/intel/vtune_amplifier_xe_2013/bin$_carch"
     # insert modules
     ./insmod-sep3 -r -g vtune
-    ./insmod-apwr -r -g vtune
+    # ./insmod-apwr -r -g vtune
 
     # create boot script
     ./boot-script-sep3 -g vtune -d "/opt/intel/vtune_amplifier_xe_2013/bin$_carch"
-    ./boot-script-apwr -g vtune -d "/opt/intel/vtune_amplifier_xe_2013/bin$_carch"
+    # ./boot-script-apwr -g vtune -d "/opt/intel/vtune_amplifier_xe_2013/bin$_carch"
     popd
 
     cat <<EOD
