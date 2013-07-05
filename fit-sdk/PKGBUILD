@@ -6,7 +6,7 @@
 # Maintainer: Chun Yang <x@cyang.info>
 pkgname=fit-sdk
 pkgver=7.10
-pkgrel=1
+pkgrel=2
 pkgdesc="The Flexible and Interoperable Data Transfer (FIT) SDK"
 arch=('i686' 'x86_64')
 url="http://www.thisisant.com/developer/ant/ant-fs-and-fit/"
@@ -75,8 +75,10 @@ package() {
     libtool --mode=install install libfit.la $pkgdir/usr/lib/libfit.la
 
     # C examples
-    install -dm755 $pkgdir/usr/share/doc/$pkgname/c
-    cp -aR $srcdir/c/examples $pkgdir/usr/share/doc/$pkgname/c
+    install -Dm644 $srcdir/c/examples/decode/decode.c \
+        $pkgdir/usr/share/doc/$pkgname/c/examples/decode/decode.c
+    install -Dm644 $srcdir/c/examples/encode/encode.c \
+        $pkgdir/usr/share/doc/$pkgname/c/examples/encode/encode.c
 
     cd "$srcdir/java"
 
