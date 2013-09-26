@@ -1,0 +1,102 @@
+# This is an example PKGBUILD file. Use this as a start to creating your own,
+# and remove these comments. For more information, see 'man PKGBUILD'.
+# NOTE: Please fill out the license field for your package! If it is unknown,
+# then please put 'unknown'.
+
+# Maintainer: Chun Yang <x@cyang.info>
+pkgname=fit-sdk
+pkgver=7.10
+pkgrel=2
+pkgdesc="The Flexible and Interoperable Data Transfer (FIT) SDK"
+arch=('i686' 'x86_64')
+url="http://www.thisisant.com/developer/ant/ant-fs-and-fit/"
+license=('custom:FIT Protocol License')
+#depends=('glibc')
+optdepends=('glibc: to use C SDK'
+            'java-environment: to use Java SDK')
+options=(!libtool)
+changelog="FIT_ReleaseNotes.txt"
+source=(http://www.thisisant.com/assets/resources/FIT/FitSDKRelease_${pkgver}.zip
+        LICENSE
+        FIT_ReleaseNotes.txt)
+md5sums=('a70e363e0bf4c7e8d814a55ea38b398c'
+         '6a182cbb1caa69b9578c50b776376b0f'
+         'c3ba5a0b1816b681abd2a10617183e8f')
+
+# prepare() {
+# 	cd "$srcdir/$pkgname-$pkgver"
+# 	patch -p1 -i "$srcdir/$pkgname-$pkgver.patch"
+# }
+
+build() {
+    cd "$srcdir/c"
+
+    # Compile C library
+    srcfiles=(fit_crc.c fit_convert.c fit_product.c fit_ram.c fit.c)
+    for f in ${srcfiles[@]}; do
+        libtool --mode=compile gcc -O3 -Wall -Wpadded -fpack-struct \
+            -DFIT_USE_STDINT_H -c "$f"
+    done
+
+    # Link C library
+    #libtool --mode=link gcc -o libfit.la $(echo $objfiles) -rpath /usr/lib \
+    libtool --mode=link gcc -o libfit.la -rpath /usr/lib -release $pkgver \
+        ${srcfiles[@]/%.c/.lo}
+}
+
+# check() {
+# 	cd "$srcdir/$pkgname-$pkgver"
+# 	make -k check
+# }
+
+package() {
+    # License
+    install -Dm644 $srcdir/LICENSE $pkgdir/usr/share/licenses/$pkgname/LICENSE
+
+    # General documentation
+    install -dm755 $pkgdir/usr/share/doc/$pkgname
+    install -m644 -t $pkgdir/usr/share/doc/$pkgname \
+        "$srcdir/D00001275 Flexible & Interoperable Data Transfer (FIT) Protocol Rev 1.4.pdf" \
+        "$srcdir/D00001309 FIT File Types Description Rev 1.5.pdf" \
+        "$srcdir/D00001384 FIT SDK Introductory Guide Rev 1.5.pdf"
+
+    # Examples
+    install -dm755 $pkgdir/usr/share/doc/$pkgname/examples
+    install -m644 $srcdir/examples/* $pkgdir/usr/share/doc/$pkgname/examples
+
+    cd "$srcdir/c"
+
+    # C include files
+    install -dm755 $pkgdir/usr/include/fit
+    install -Dm644 -t $pkgdir/usr/include/fit $srcdir/c/fit*.h
+
+    # C library files
+    install -dm755 $pkgdir/usr/lib
+    libtool --mode=install install libfit.la $pkgdir/usr/lib/libfit.la
+
+    # C examples
+    install -Dm644 $srcdir/c/examples/decode/decode.c \
+        $pkgdir/usr/share/doc/$pkgname/c/examples/decode/decode.c
+    install -Dm644 $srcdir/c/examples/encode/encode.c \
+        $pkgdir/usr/share/doc/$pkgname/c/examples/encode/encode.c
+
+    cd "$srcdir/java"
+
+    # Java jars
+    install -Dm644 $srcdir/java/fit.jar \
+        $pkgdir/usr/share/java/$pkgname-$pkgver/fit.jar
+    install -Dm644 $srcdir/java/FitCSVTool.jar \
+        $pkgdir/usr/share/java/$pkgname-$pkgver/FitCSVTool.jar
+    install -Dm644 $srcdir/java/FitTestTool.jar \
+        $pkgdir/usr/share/java/$pkgname-$pkgver/FitTestTool.jar
+
+    # Java documentation
+    install -dm755 $pkgdir/usr/share/doc/$pkgname/java
+    install -m644 -t $pkgdir/usr/share/doc/$pkgname/java \
+        $srcdir/java/FitDecodeExample.jar $srcdir/java/FitEncodeExample.jar
+    cp -aR $srcdir/java/doc $pkgdir/usr/share/doc/$pkgname/java
+
+    # Add Java symlinks
+    cd $pkgdir/usr/share/java
+    ln -sv "$pkgname-$pkgver" "$pkgname"
+}
