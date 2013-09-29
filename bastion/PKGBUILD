@@ -1,0 +1,42 @@
+# Maintainer: Chun Yang <x@cyang.info>
+pkgname=bastion
+pkgver=1.4
+pkgrel=1
+pkgdesc="Experience that redefines storytelling in games"
+arch=('x86_64')
+url="http://supergiantgames.com"
+license=('GPL2' 'custom')
+depends=('glibc>=2.9' 'gcc-libs>=4.1.1' 'libgl' 'sdl>=1.2'
+         'sdl_mixer>=1.2' 'sdl_ttf>=2.0' 'smpeg'
+         'libx11' 'libxinerama' 'libxxf86vm')
+_query=""
+source=($pkgname-$pkgver.deb::https://hb1.ssl.hwcdn.net/$pkgname_$pkgver-0ubuntu1_amd64.deb?$query)
+md5sums=('36466630458b7e80d11c0b598cab8757')
+
+package() {
+    cd "$pkgdir"
+
+    tar -xzf "$srcdir/data.tar.gz"
+
+    cd opt/bastion
+
+    # Remove extra directory
+    mv Bastion/* .
+    rmdir Bastion
+
+    # Remove unused files
+    rm bastion64.sh
+    rm -r "../../usr/share/lintian"
+
+    # Install license
+    install -Dm644 "$pkgdir/usr/share/doc/bastion/copyright" \
+        "$pkgdir/usr/share/licenses/bastion/copyright"
+
+    # NOTE: Installing to custom location /media/hdd/opt
+    install -dm755 "$pkgdir/media/hdd"
+    mv "$pkgdir/opt" "$pkgdir/media/hdd/opt"
+
+    # Install executable
+    install -dm755 "$pkgdir/usr/bin"
+    ln -sv "/media/hdd/opt/bastion/Bastion.bin.x86_64" "$pkgdir/usr/bin/bastion"
+}
