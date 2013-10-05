@@ -5,8 +5,8 @@
 
 # Maintainer: Chun Yang <x@cyang.info>
 pkgname=fit-sdk
-pkgver=7.10
-pkgrel=2
+pkgver=8.10
+pkgrel=1
 pkgdesc="The Flexible and Interoperable Data Transfer (FIT) SDK"
 arch=('i686' 'x86_64')
 url="http://www.thisisant.com/developer/ant/ant-fs-and-fit/"
@@ -19,9 +19,9 @@ changelog="FIT_ReleaseNotes.txt"
 source=(http://www.thisisant.com/assets/resources/FIT/FitSDKRelease_${pkgver}.zip
         LICENSE
         FIT_ReleaseNotes.txt)
-md5sums=('a70e363e0bf4c7e8d814a55ea38b398c'
+md5sums=('38f64d90a140ebda1973a1a8deef8911'
          '6a182cbb1caa69b9578c50b776376b0f'
-         'c3ba5a0b1816b681abd2a10617183e8f')
+         '0ea98c5b6e1e1447bd88df8bf3e94dca')
 
 # prepare() {
 # 	cd "$srcdir/$pkgname-$pkgver"

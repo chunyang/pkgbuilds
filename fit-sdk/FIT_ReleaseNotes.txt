@@ -1,4 +1,13 @@
 FIT SDK External Release Notes
+ 
+8.10
+-Profile Changes 
+-Fixed issue where Java decoder was not preserving the type of unknown fields
+
+8.00
+-Add check that mesg_index is valid in Fit_GetFileMesgOffset()
+-Profile Changes
+
 
 7.10
 -Profile Changes
