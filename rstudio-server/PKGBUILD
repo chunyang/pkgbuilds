@@ -8,7 +8,7 @@ url="http://www.rstudio.com/"
 license=('AGPL3')
 arch=('i686' 'x86_64')
 depends=('r>=2.11.1' 'boost-libs' 'gwt' 'hunspell' 'mathjax' 'openssl>=0.9.8' 'pam')
-makedepends=('boost' 'cmake>=2.6' 'fakeroot' 'java-environment' 'google-guice' 'google-gin')
+makedepends=('apache-ant' 'boost' 'cmake>=2.6' 'fakeroot' 'java-environment' 'google-guice' 'google-gin')
 backup=(etc/pam.d/rstudio)
 install=rstudio-server.install
 source=(https://github.com/rstudio/rstudio/archive/v${pkgver}.tar.gz
