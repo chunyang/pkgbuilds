@@ -12,14 +12,13 @@ makedepends=('apache-ant' 'boost' 'cmake>=2.6' 'cups' 'java-environment' 'google
 backup=(etc/pam.d/rstudio)
 install=rstudio-server.install
 source=(https://github.com/rstudio/rstudio/archive/v${pkgver}.tar.gz
-        rstudio-server.install
-        rstudio-server.service
+        ${pkgname}.install
+        ${pkgname}.service
         arch-build.patch)
-noextract=()
-md5sums=('66c4be4d25014ed078d9780ebd77c1b1'
-         'afab28f5888ec78af93349c182993fa0'
-         'ef7f96f0f8fbbd829646e46d96db1f6a'
-         '3c4c4ff53948766fc65e03d34a6bf030')
+sha256sums=('ecc9127f6ab0ab0f7998a48b39812541cda82489fbc24236e69e44a75a9e3299'
+            '0f17c14965267dbd1ced1dd30b21397edb133e8c8661c5ca0821ec9deb2172fa'
+            'ab634b3f10d811be54f6957b464ec1d204d6b5af6d8b26f32975c50a998347ec'
+            'b7f0576197ccf4cb1d3c9f9c1a04a19f201001e2c15e16663ad47e9bbde87402')
 
 prepare() {
     cd "$srcdir/$_pkgname-$pkgver/"
