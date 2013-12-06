@@ -6,6 +6,7 @@ pkgdesc="Free, open, simple blogging platform"
 arch=('i686' 'x86_64')
 url="http://ghost.org"
 license=('MIT')
+makedepends=('unzip')
 depends=('nodejs>0.10' 'nodejs<0.11.4')
 backup=('srv/ghost/Gruntfile.js' 'srv/ghost/index.js' 'srv/ghost/package.json')
 install=ghost.install
