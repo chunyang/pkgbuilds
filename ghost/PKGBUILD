@@ -1,19 +1,18 @@
 # Maintainer: Chun Yang <x@cyang.info>
 pkgname=ghost
-pkgver=0.3.3
-pkgrel=2
+pkgver=0.5.0
+pkgrel=1
 pkgdesc="Free, open, simple blogging platform"
 arch=('i686' 'x86_64')
 url="http://ghost.org"
 license=('MIT')
-makedepends=('unzip')
-depends=('nodejs>0.10' 'nodejs<0.11.4')
+depends=('nodejs>0.10' 'nodejs<0.11.0')
 backup=('srv/ghost/Gruntfile.js' 'srv/ghost/index.js' 'srv/ghost/package.json')
 install=ghost.install
-source=(https://en.ghost.org/zip/$pkgname-$pkgver.zip
+source=(http://ghost.org/zip/$pkgname-$pkgver.zip
         ghost.service)
-sha256sums=('5a323ac459ac16d84c92171c25e1c820a6ccd962812ed260bde7666f7cbe9922'
-            'c1f7bc0a3b3c4aa11a68934e6e39e3e83a2d6ac7bf8591d18521df0d0a389c3c')
+sha256sums=('3901fd0efe0a0ea40c433e670f0b41ef25dabef41c9e3b3d6f3cf9716e416459'
+            'c454a46382a56846115169788af1a70e80941cc4ef483d9661008cfcf2cfc123')
 
 # Note: You may need to log into ghost.org and download the zip file manually
 # and place it inside the same directory as the PKGBUILD
@@ -22,11 +21,11 @@ package() {
     install -dm755 "$pkgdir/srv/ghost"
     cd "$pkgdir/srv/ghost"
 
-    install -Dm644 "$srcdir/LICENSE.txt" "$pkgdir/usr/share/licenses/ghost/LICENSE.txt"
+    install -Dm644 "$srcdir/LICENSE" "$pkgdir/usr/share/licenses/ghost/LICENSE"
 
     install -Dm644 "$srcdir/ghost.service" "${pkgdir}/usr/lib/systemd/system/ghost.service"
 
-    unzip "$srcdir/$pkgname-$pkgver.zip"
+    bsdtar -xf "$srcdir/$pkgname-$pkgver.zip"
     npm install --production
 
     chmod -R g=u "$pkgdir/srv/ghost"
@@ -38,12 +37,12 @@ package() {
 	restarting the server. However, as the database, image uploads and
 	custom themes are stored alongside Ghost in the content directory,
 	care should be taken to only replace the necessary files as explained at
-	http://docs.ghost.org/installation/upgrading/ .
+	http://support.ghost.org/how-to-upgrade/ .
 
 	It is highly recommended that you make a backup of your data before
-	upgrading. This can be done by logging into your Ghost install and going
-	to /ghost/debug/. Press the export button to download a JSON file
-	containing all of your data.
+	upgrading. To backup all the data from your database, log into your
+	Ghost install and go to /ghost/debug/. Press the export button to
+	download a JSON file containing all of your data.
 
 	EOF
 }
