@@ -1,7 +1,7 @@
 # Contributor: Victor Noël
 
 pkgname=yarp
-pkgver=2.3.22
+pkgver=2.3.63
 pkgrel=1
 pkgdesc="Yet Another Robot Platform"
 url="http://eris.liralab.it/yarp/"
@@ -9,22 +9,41 @@ license=('custom' 'LGPL2.1')
 arch=('i686' 'x86_64')
 makedepends=('cmake')
 depends=('ace' 'gsl' 'gtkdatabox' 'gtkmm' 'sqlite' 'tinyxml')
+#depends=('ace' 'gtkmm' 'gsl')
 options=(!libtool)
-source=(http://downloads.sourceforge.net/yarp0/$pkgname-$pkgver.tar.gz)
-md5sums=('8955613ad9655df23d58f014ce60d3fa')
+source=(http://downloads.sourceforge.net/yarp0/$pkgname-$pkgver.tar.gz
+        StubImplPositionControl2Raw.patch)
+#        ace.patch)
+sha256sums=('54969028f52d8cbc593f2d34ab8b66a748c8dbe40ece0022bda2473babcc948a'
+            'de96b135eb19a9fc4f0d414151b3a580a5824a5a23398c551f2f2dae5c449486')
 
 build() {
-  mkdir -p $srcdir/$pkgname-$pkgver/build
-  cd $srcdir/$pkgname-$pkgver/build
+  cd $srcdir/$pkgname-$pkgver/
 
-  cmake ../ -DCMAKE_INSTALL_PREFIX=/usr -DCREATE_GUIS=TRUE -DCREATE_SHARED_LIBRARY=TRUE -DCREATE_LIB_MATH=TRUE 
+  cd $srcdir
+
+  patch -Np1 -i StubImplPositionControl2Raw.patch
+
+  rm -rf build-$pkgname-$pkgver
+  mkdir build-$pkgname-$pkgver
+  cd build-$pkgname-$pkgver
+
+  cmake ../$pkgname-$pkgver \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCREATE_GUIS=TRUE \
+      -DCREATE_SHARED_LIBRARY=TRUE \
+      -DCREATE_LIB_MATH=TRUE \
+      -DCREATE_OPTIONAL_CARRIERS=TRUE \
+      -DENABLE_yarpcar_bayer_carrier=TRUE
+
   make
 }
 
 package() {
-  cd $srcdir/$pkgname-$pkgver/build
+  cd $srcdir/build-$pkgname-$pkgver
 
   make DESTDIR=$pkgdir install
 
-  install -Dm644 ../COPYING $pkgdir/usr/share/licenses/$pkgname/COPYING
+  install -Dm644 ../$pkgname-$pkgver/COPYING $pkgdir/usr/share/licenses/$pkgname/COPYING
 }
