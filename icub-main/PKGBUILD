@@ -1,0 +1,40 @@
+# Contributor: Chun Yang
+
+pkgname=icub-main
+pkgver=1.1.15
+pkgrel=1
+pkgdesc="The iCub Main Software Repository"
+url="https://github.com/robotology/icub-main"
+license=('GPL')
+arch=('i686' 'x86_64')
+makedepends=('cmake')
+depends=('yarp>=2.3.63')
+options=(!libtool)
+source=($pkgname-$pkgver.tar.gz::https://github.com/robotology/$pkgname/archive/v${pkgver}.tar.gz)
+sha256sums=('30cf84e4f2947ad315a64f52b15f3739392a06d75dc3e4a5cbd4f03392dd9708')
+
+build() {
+  cd $srcdir
+
+  #patch -Np1 -i StubImplPositionControl2Raw.patch
+
+  rm -rf build-$pkgname-$pkgver
+  mkdir build-$pkgname-$pkgver
+  cd build-$pkgname-$pkgver
+
+  cmake ../$pkgname-$pkgver \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_INSTALL_PREFIX=/usr \
+      -DENABLE_icubmod_cartesiancontrollerclient=TRUE \
+      -DENABLE_icubmod_cartesiancontrollerserver=TRUE \
+      -DENABLE_icubmod_debugInterfaceClient=TRUE \
+      -DENABLE_icubmod_gazecontrollerclient=TRUE
+
+  make
+}
+
+package() {
+  cd $srcdir/build-$pkgname-$pkgver
+
+  make DESTDIR=$pkgdir install
+}
