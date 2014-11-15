@@ -1,11 +1,23 @@
 diff -Naur a/yarp-2.3.63/src/libYARP_dev/src/ControlBoardInterfacesImpl.cpp b/yarp-2.3.63/src/libYARP_dev/src/ControlBoardInterfacesImpl.cpp
 --- a/yarp-2.3.63/src/libYARP_dev/src/ControlBoardInterfacesImpl.cpp	2014-07-14 05:40:11.000000000 -0500
 +++ b/yarp-2.3.63/src/libYARP_dev/src/ControlBoardInterfacesImpl.cpp	2014-11-15 16:18:29.661911669 -0600
-@@ -25,6 +25,18 @@
+@@ -25,6 +25,30 @@
      return false;
  }
  
 +bool StubImplPositionControl2Raw::NOT_YET_IMPLEMENTED(const char *func)
++{
++    if (func)
++        fprintf(stderr, "%s:", func);
++    else
++        fprintf(stderr, "Function ");
++
++    fprintf(stderr, "not yet implemented\n");
++
++    return false;
++}
++
++bool StubImplPositionDirectRaw::NOT_YET_IMPLEMENTED(const char *func)
 +{
 +    if (func)
 +        fprintf(stderr, "%s:", func);

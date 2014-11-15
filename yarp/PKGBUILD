@@ -12,17 +12,17 @@ depends=('ace' 'gsl' 'gtkdatabox' 'gtkmm' 'sqlite' 'tinyxml')
 #depends=('ace' 'gtkmm' 'gsl')
 options=(!libtool)
 source=(http://downloads.sourceforge.net/yarp0/$pkgname-$pkgver.tar.gz
-        StubImplPositionControl2Raw.patch)
+        StubImplPosition.patch)
 #        ace.patch)
 sha256sums=('54969028f52d8cbc593f2d34ab8b66a748c8dbe40ece0022bda2473babcc948a'
-            'de96b135eb19a9fc4f0d414151b3a580a5824a5a23398c551f2f2dae5c449486')
+            'b93fcfb50c8208a671d8b6eb2f395d67fbf827b82a28b9d41a2feb009d1d86aa')
 
 build() {
   cd $srcdir/$pkgname-$pkgver/
 
   cd $srcdir
 
-  patch -Np1 -i StubImplPositionControl2Raw.patch
+  patch -Np1 -i StubImplPosition.patch
 
   rm -rf build-$pkgname-$pkgver
   mkdir build-$pkgname-$pkgver
