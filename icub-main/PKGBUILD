@@ -9,7 +9,7 @@ license=('GPL')
 arch=('i686' 'x86_64')
 makedepends=('cmake')
 depends=('yarp>=2.3.63')
-options=(!libtool)
+options=(staticlibs)
 source=($pkgname-$pkgver.tar.gz::https://github.com/robotology/$pkgname/archive/v${pkgver}.tar.gz)
 sha256sums=('30cf84e4f2947ad315a64f52b15f3739392a06d75dc3e4a5cbd4f03392dd9708')
 
